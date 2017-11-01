@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <title>ArteMIS</title>
+    <!-- CSS -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet">
+    <link href="../static/css/reset.css" rel="stylesheet">
+    <link href="../static/css/style.css" rel="stylesheet">
+
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="../static/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
+  </head>
+
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Brand</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+          <form id="searchbar" class="navbar-form navbar-left" action="/omnisearchajax/" method="post">
+            <div class="form-group ui-widget">
+              <script type="text/javascript">
+                $(document).ready(function() {
+                  $("#searchbox").select2({
+                    tags: true,
+                    multiple: true,
+                    tokenSeparators: [',', ' '],
+                    minimumInputLength: 2,
+                    ajax: {
+                        url: "/omnisearchajax/",
+                        dataType: "json",
+                        type: "GET",
+                        data: function (params) {
+                            var queryParameters = {
+                                term: params.term
+                            }
+                            return queryParameters;
+                        },
+                        processResults: function (data) {
+                            return {
+                                results: $.map(data.result, function (item) {
+                                    return {
+                                        id: item.id + "$" + item.type,
+                                        text: item.value
+                                    }
+                                })
+                            };
+                        }
+                    }
+                });
+              });
+              </script>
+
+              <select id="searchbox" name="searchtext[]" form="searchbar" style="width: 70vw" multiple="multiple"></select>
+              <input type="hidden" name="csrf_token" value="">
+            </div>
+            <button id="submit-button" type="submit" class="btn btn-default">Submit</button>
+          </form>
+
+          <script>
+            $(document).ready(function() {
+              $("#searchbar").submit(function( event ) {
+                var data = JSON.stringify( $("#searchbar").serializeArray() );
+                console.log( data );
+                return data;
+              });
+            });
+          </script>
+
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Link</a></li>
+            <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Ijkl</b><b class="caret"></b></a>
+              <!-- Link or button to toggle dropdown -->
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#"><b>User</b></a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#"><b>Account</b></a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#"><b>Settings</b></a></li>
+                <li role="presentation" class="divider"></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#"><b>Log out</b></a></li>
+              </ul>
+            </li>
+          </ul>
+
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+    {% block content %}{% endblock %}
+  </body>
+</html>

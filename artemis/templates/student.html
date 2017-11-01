@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script src="../static/js/main.js" async></script>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-sm-offset-1"></div>
+        <div class="col-sm-7">
+          <ul  class="nav nav-pills">
+            <li class="active"><a  href="#1a" data-toggle="tab">Contact</a></li>
+            <li><a href="#2a" data-toggle="tab">Timetable</a></li>
+            <li><a href="#3a" data-toggle="tab">Attendance</a></li>
+            <li><a href="#4a" data-toggle="tab">Assessment</a></li>
+          </ul>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3 col-sm-offset-1">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <img id="photo" src="{{ studentImg }}" width="150">
+              <h3>{{ studentName }}</h3>
+              <table border="0">
+                <tr>
+                  <td class="cell-headers"><div style="width: 100px">Year:</div></td>
+                  <td>{{ studentYear }}</td>
+                </tr>
+                <tr>
+                  <td class="cell-headers">DOB:</td>
+                  <td>{{ studentDOB }}</td>
+                </tr>
+                <tr>
+                  <td class="cell-headers">Form:</td>
+                  <td>{{ studentForm }}</td>
+                </tr>
+                <tr>
+                  <td class="cell-headers">Form Tutor:</td>
+                  <td>{{ studentFormTutor }}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-7">
+          <div>
+            <div class="tab-content clearfix">
+              <div class="tab-pane active" id="1a">
+                <div class="row">
+                  <div class="col-sm-6">
+                    {% for addressType, address in contactDict["StudentInfo"]["Address"] %}
+                      <h3>
+                        Student {{ addressType }} Address:
+                        <br>
+                        {{ address }}
+                      </h3>
+                    {% endfor %}
+                  </div>
+                  <div class="col-sm-6">
+                    {% for phoneType, phone in contactDict["StudentInfo"]["Phone"] %}
+                      <h3>
+                        Student {{ phoneType }} Phone:
+                        <br>
+                        {{ phone }}
+                      </h3>
+                    {% endfor %}
+                  </div>
+                </div>
+                <div class="row">
+                  {% for contactInfoDict in contactDict["ContactInfo"] %}
+                  <div class="col-sm-4">
+                    <div class="contact">
+                      <h3>{{ contactInfoDict["Name"][0] }}</h3>
+                      <h2>{{ contactInfoDict["Name"][1] }}</h2>
+                      <hr>
+
+                    {% for addressType, address in contactInfoDict["Address"] %}
+                      {% if address == "Same as Pupil" %}
+                        <h3>Address Same As Pupil</h3>
+                      {% else %}
+                        <h3>
+                          <b>{{ addressType }}</b>
+                          <br>{{ address }}
+                        </h3>
+                      {% endif %}
+                    {% endfor %}
+
+                    {% for phoneType, phone in contactInfoDict["Phone"] %}
+                      <span class="prefix">{{ phoneType }}</span>
+                      {{ phone }}
+                      <br>
+                    {% endfor %}
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="tab-pane" id="2a">
+              </div>
+              <div class="tab-pane" id="3a">
+                <h3>We applied clearfix to the tab-content to rid of the gap between the tab and the content</h3>
+              </div>
+              <div class="tab-pane" id="4a">
+                <h3>We use css to change the background color of the content to be equal to the tab</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}
