@@ -1,5 +1,6 @@
 env
 *.DS_Store
 *.pyc
+*.log
 __pycache__
-
+artemis/media/

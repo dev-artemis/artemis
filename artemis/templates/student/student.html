@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %}
-<script src="../static/js/main.js" async></script>
+<script src="../../static/js/main.js" async></script>
 {% endblock %}
 
 
@@ -23,24 +23,24 @@
         <div class="col-sm-3 col-sm-offset-1">
           <div class="panel panel-default">
             <div class="panel-body">
-              <img id="photo" src="{{ studentImg }}" width="150">
-              <h3>{{ studentName }}</h3>
+              <img id="photo" src="{{ student.photo.url }}" width="150">
+              <h3>{{ student }}</h3>
               <table border="0">
                 <tr>
                   <td class="cell-headers"><div style="width: 100px">Year:</div></td>
-                  <td>{{ studentYear }}</td>
+                  <td>{{ student.form.year }}</td>
                 </tr>
                 <tr>
                   <td class="cell-headers">DOB:</td>
-                  <td>{{ studentDOB }}</td>
+                  <td>{{ student.dob }}</td>
                 </tr>
                 <tr>
                   <td class="cell-headers">Form:</td>
-                  <td>{{ studentForm }}</td>
+                  <td>{{ student.form }}</td>
                 </tr>
                 <tr>
                   <td class="cell-headers">Form Tutor:</td>
-                  <td>{{ studentFormTutor }}</td>
+                  <td>SOME TEACHER</td>
                 </tr>
               </table>
             </div>
@@ -52,50 +52,34 @@
               <div class="tab-pane active" id="1a">
                 <div class="row">
                   <div class="col-sm-6">
-                    {% for addressType, address in contactDict["StudentInfo"]["Address"] %}
                       <h3>
-                        Student {{ addressType }} Address:
-                        <br>
-                        {{ address }}
+                        {% if student_addr %}
+                          {{ student_addr|linebreaks }}
+                        {% endif %}
                       </h3>
-                    {% endfor %}
                   </div>
                   <div class="col-sm-6">
-                    {% for phoneType, phone in contactDict["StudentInfo"]["Phone"] %}
-                      <h3>
-                        Student {{ phoneType }} Phone:
-                        <br>
-                        {{ phone }}
-                      </h3>
-                    {% endfor %}
+                      {% if student_phone %}
+                        <h3>
+                          Student {{ student_phone.get_phone_type_display }} Phone:
+                          <br>
+                          {{ student_phone.phone_number }}
+                        </h3>
+                      {% endif %}
                   </div>
                 </div>
                 <div class="row">
-                  {% for contactInfoDict in contactDict["ContactInfo"] %}
-                  <div class="col-sm-4">
-                    <div class="contact">
-                      <h3>{{ contactInfoDict["Name"][0] }}</h3>
-                      <h2>{{ contactInfoDict["Name"][1] }}</h2>
-                      <hr>
-
-                    {% for addressType, address in contactInfoDict["Address"] %}
-                      {% if address == "Same as Pupil" %}
-                        <h3>Address Same As Pupil</h3>
-                      {% else %}
-                        <h3>
-                          <b>{{ addressType }}</b>
-                          <br>{{ address }}
-                        </h3>
-                      {% endif %}
-                    {% endfor %}
-
-                    {% for phoneType, phone in contactInfoDict["Phone"] %}
-                      <span class="prefix">{{ phoneType }}</span>
-                      {{ phone }}
-                      <br>
-                    {% endfor %}
+                  {% for contact in student_contacts %}
+                    <div class="col-sm-4">
+                      <div class="contact">
+                        <h3>{{ contact.contact_name }}</h3>
+                        <hr>
+                          <h3>{{ contact.contact_addr|linebreaks }}</h3>
+                        <span class="prefix">{{ contact.contact_phone.get_phone_type_display }}</span>
+                        {{ contact.contact_phone.phone_number }}
+                        <br>
+                      </div>
                     </div>
-                  </div>
                   {% endfor %}
                 </div>
               </div>
