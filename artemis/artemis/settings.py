@@ -38,7 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django_extensions',
+
     'artemis.base',
+    'artemis.student',
 ]
 
 MIDDLEWARE = [
@@ -80,7 +83,7 @@ WSGI_APPLICATION = 'artemis.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'artemisdb',                      
+        'NAME': 'artemisdb',
         'USER': 'artemisdb',
         'PASSWORD': '$ArtemisPortal4',
         'HOST': 'localhost',
@@ -163,7 +166,7 @@ LOGGING = {
             'maxBytes': 1024*1024*5, # 5 MB
             'backupCount': 5,
             'formatter':'standard',
-        },  
+        },
         'request_handler': {
                 'level':'DEBUG',
                 'class':'logging.handlers.RotatingFileHandler',
