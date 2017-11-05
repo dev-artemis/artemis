@@ -38,18 +38,48 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
-          <form id="searchbar" class="navbar-form navbar-left" action="/omnisearchajax/" method="post">
+          <form id="searchbar" class="navbar-form navbar-left" action="/omnisearchajax/" method="get">
             <div class="form-group ui-widget">
               <script type="text/javascript">
+                // using jQuery
+                function getCookie(name) {
+                    var cookieValue = null;
+                    if (document.cookie && document.cookie !== '') {
+                        var cookies = document.cookie.split(';');
+                        for (var i = 0; i < cookies.length; i++) {
+                            var cookie = jQuery.trim(cookies[i]);
+                            // Does this cookie string begin with the name we want?
+                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                }
+                var csrftoken = getCookie('csrftoken');
+
+                function csrfSafeMethod(method) {
+                  // these HTTP methods do not require CSRF protection
+                  return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+                }
+                $.ajaxSetup({
+                    beforeSend: function(xhr, settings) {
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                        }
+                    }
+                });
+
                 $(document).ready(function() {
                   $("#searchbox").select2({
                     tags: true,
                     multiple: true,
-                    tokenSeparators: [',', ' '],
+                    tokenSeparators: [','],
                     minimumInputLength: 2,
                     ajax: {
                         url: "/omnisearchajax/",
-                        dataType: "json",
+                        // dataType: "json",
                         type: "GET",
                         data: function (params) {
                             var queryParameters = {
@@ -61,7 +91,7 @@
                             return {
                                 results: $.map(data.result, function (item) {
                                     return {
-                                        id: item.id + "$" + item.type,
+                                        id: item.id + "$" + item.model,
                                         text: item.value
                                     }
                                 })
@@ -73,7 +103,7 @@
               </script>
 
               <select id="searchbox" name="searchtext[]" form="searchbar" style="width: 70vw" multiple="multiple"></select>
-              <input type="hidden" name="csrf_token" value="">
+              <input type="hidden" name="csrf_token" value="{% csrf_token %}">
             </div>
             <button id="submit-button" type="submit" class="btn btn-default">Submit</button>
           </form>

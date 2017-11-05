@@ -18,13 +18,14 @@ from django.conf import settings
 from django.contrib import admin
 from django.http import HttpResponseRedirect
 
-from base.views import Home
+from base.views import Home, OmniSearchResponse
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'home/', Home.as_view(), name='home'),
     url(r'^$', lambda r: HttpResponseRedirect('home/')),
     url(r'^student/', include('artemis.student.urls', namespace='student')),
+    url(r'^omnisearchajax/$', OmniSearchResponse.as_view(), name="omnisearch")
 ]
 
 urlpatterns += static.static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

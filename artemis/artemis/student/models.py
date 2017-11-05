@@ -95,7 +95,7 @@ class Student(models.Model):
         return '%s %s' % (self.first_name, self.last_name)
 
     def get_absolute_url(self):
-        return "/student/%i/" % self.id
+        return "/student/%i" % self.id
 
 
 @python_2_unicode_compatible
@@ -108,7 +108,7 @@ class Contact(models.Model):
         return '%s %s' % (self.first_name, self.last_name)
 
     def get_absolute_url(self):
-        return "/student/%i/" % self.id
+        return "/contact/%i" % self.id
 
 
 class BaseLinkModel(models.Model):
