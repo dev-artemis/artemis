@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     'artemis.base',
     'artemis.student',
+    'artemis.teacher',
 ]
 
 MIDDLEWARE = [
@@ -146,7 +147,7 @@ USE_TZ = True
 STATIC_ROOT = '/home/ubuntu/artemis/artemis/static'
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = '/home/ubuntu/artemis/artemis/media'
 MEDIA_URL = '/media/'
 
 
