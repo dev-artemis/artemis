@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -39,10 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django_extensions',
+    'fullcalendar',
 
     'artemis.base',
     'artemis.student',
     'artemis.teacher',
+    'artemis.lesson',
 ]
 
 MIDDLEWARE = [
@@ -149,6 +152,16 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = '/home/ubuntu/artemis/artemis/media'
 MEDIA_URL = '/media/'
+
+
+FULLCALENDAR_FOLDER = os.path.abspath(os.path.join(BASE_DIR, '..', '..', 'django-fullcalendar'))
+if FULLCALENDAR_FOLDER not in sys.path:
+    sys.path.insert(0, FULLCALENDAR_FOLDER)
+
+# FULLCALENDAR = {
+#     'css_url': '{}css/fullcalendar.min.css'.format(STATIC_URL),
+#     'javascript_url': '{}js/fullcalendar.min.js'.format(STATIC_URL),
+# }
 
 
 LOGGING = {

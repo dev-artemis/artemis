@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load fullcalendar_tags %}
+
 {% block head %}
 <script src="../../static/js/main.js" async></script>
 {% endblock %}
@@ -84,6 +86,7 @@
                 </div>
               </div>
               <div class="tab-pane" id="2a">
+                <div id="calendar"></div>
               </div>
               <div class="tab-pane" id="3a">
                 <h3>We applied clearfix to the tab-content to rid of the gap between the tab and the content</h3>
@@ -96,5 +99,58 @@
         </div>
       </div>
     </div>
+
+
+    {% fullcalendar_css %}
+    {% fullcalendar_print_css %}
+    {% fullcalendar_javascript %}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // page is now ready, initialize the calendar...
+            $('#calendar').fullCalendar({
+              events: [
+                {% for event in student_events %}
+                  {
+                    title  : '{{ event.title }}',
+                    start  : '{{ event.start }}',
+                    end    : '{{ event.end }}',
+                    url    : '{{ event.url }}',
+                    allDay: {% if event.all_day %}true{% else %}false{% endif %},
+                    id     : '{{ event.id }}'
+                  }{% if not forloop.last %},{% endif %}
+                {% endfor %}
+              ],
+              timeFormat: "H:mm",
+              header: {
+                  left: 'prev,next today',
+                  center: 'title',
+                  right: 'month,agendaWeek,agendaDay',
+              },
+              allDaySlot: false,
+              firstDay: 1,
+              weekMode: 'liquid',
+              slotMinutes: 30,
+              defaultView: 'agendaWeek',
+              defaultEventMinutes: 30,
+              minTime: 6,
+              maxTime: 22,
+              scrollTime: '08:00:00',
+              editable: false,
+              dayClick: function(date, allDay, jsEvent, view) {
+                  if (allDay) {
+                      $('#calendar').fullCalendar('gotoDate', date)
+                      $('#calendar').fullCalendar('changeView', 'agendaDay')
+                  }
+              },
+              eventClick: function(event, jsEvent, view) {
+                  if (view.name == 'month') {
+                      $('#calendar').fullCalendar('gotoDate', event.start)
+                      $('#calendar').fullCalendar('changeView', 'agendaDay')
+                  }
+              },
+            });
+        });
+    </script>
 
 {% endblock %}

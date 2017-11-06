@@ -1,5 +1,15 @@
 {% extends "base.html" %}
 
+{% load fullcalendar_tags custom_fullcalendar_tags %}
+
 {% block content %}
-      <h1>Hello!</h1>
+
+      {% fullcalendar_css %}
+      {% fullcalendar_print_css %}
+      {% fullcalendar_javascript %}
+
+      {% calendar_init_custom %}
+
+      {% calendar %}
+      
 {% endblock %}
