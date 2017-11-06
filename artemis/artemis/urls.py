@@ -19,12 +19,17 @@ from django.contrib import admin
 from django.http import HttpResponseRedirect
 
 from base.views import Home, OmniSearchResponse
+from lesson.views import index, all_events
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'home/', Home.as_view(), name='home'),
-    url(r'^$', lambda r: HttpResponseRedirect('home/')),
+    # url(r'^$', Index, name='index'),
+    # url(r'^home/', LessonCalendar, name='lesson_calendar_event'),
+    url(r'^$', index, name='index'),
+    url(r'^all_events/', all_events, name='all_events'),
     url(r'^student/', include('artemis.student.urls', namespace='student')),
+    url(r'^lesson/', include('artemis.lesson.urls', namespace='lesson')),
+    url(r'^teacher/', include('artemis.teacher.urls', namespace='teacher')),
     url(r'^omnisearchajax/$', OmniSearchResponse.as_view(), name="omnisearch")
 ]
 
